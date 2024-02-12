@@ -212,8 +212,8 @@ function handelAfterRadixPointNumber(inputFloatNumber){
 
 	// while the number not become 1 or after some iterations 
 	// multiply by 2 and check for the floor part and append in resultant
-	iterationCount = 0
-	resultant = []
+	let iterationCount = 0
+	let resultant = []
 	while(inputFloatNumber!=1 && iterationCount!=10){
 		inputFloatNumber = inputFloatNumber * 2
 		resultant.push(Math.floor(inputFloatNumber))
@@ -236,6 +236,7 @@ function getJSNumberRepresentation(inputDeciamlNumber) {
 	// if negative make number positive and store a flag for future
 	let flag = 0
 	if (Math.sign(inputDeciamlNumber) == -1) {
+		inputDeciamlNumber = -(inputDeciamlNumber)
 		flag = -1
 	}
 	
@@ -258,17 +259,51 @@ function getJSNumberRepresentation(inputDeciamlNumber) {
 		// store the length of beforeRadixPointNumber so that we know where to add '.'
 		let lengthTillRadixPoint = beforeRedixPointNumber.length
 
-		// combined the array so that i can do 2's complementary
+		// combined the array so that  2's complementary can be done
 		let combinedBinaryNumber = [...beforeRedixPointNumber,...afterRadixPointNumber]
 		if(flag == -1){
 			combinedBinaryNumber = give2sComplement(combinedBinaryNumber)
 		}
 
-		// now check for leading one 
+		// now check for first leading one 
+		let positionOfLeadingOne 
+		for(let i=0;i<combinedBinaryNumber.length;i++){
+
+			if(combinedBinaryNumber[i]===1){
+				positionOfLeadingOne = i
+				break
+
+				
+			}
+		}
+		// calculate the exponent part 
+		let Exponent = (lengthTillRadixPoint-1) - positionOfLeadingOne
+		
+		// now calculate the binary for the exponent in 11 bit
+		let ExponentBinaryArray= getSimple2sComplement(Exponent,11)
+
+		// according to js representation we have exponent first in array
+		let jsRepresentation = [...ExponentBinaryArray] 
+
+		//now according to the implicit representation of float we take
+		//RHS of most signficant 1 
+				
+		for(let i=positionOfLeadingOne-1;i<combinedBinaryNumber.length;i++){
+			jsRepresentation.push(combinedBinaryNumber[i])
+
+		}
+		// // if the length of array is not in 63 bits the nappend 0 at end
+		// // TODO: change the bits to original 
+		if(jsRepresentation.length != 16){
+			let jsRepresentationLength = jsRepresentation.length
+			for(let i=0;i<(16 -jsRepresentationLength);i++){
+				jsRepresentation.push(0)
+			}
+		}
 
 		
 
-		return combinedBinaryNumber
+		return jsRepresentation
 		
 		
 
