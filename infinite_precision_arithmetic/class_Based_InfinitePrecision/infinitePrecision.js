@@ -227,96 +227,57 @@ class InfiniteNumber {
 		let firstInfiniteArray = this.getInternalArray()
 		let secondInfiniteArray = infiniteNumber.getInternalArray()
 
-		// flag to know which array is bigger
-		let flag = 0
+		
+		if(this.compareTwoInfiniteNumber(infiniteNumber)){
 
-		// check the larger array
-		if (firstInfiniteArray.length > secondInfiniteArray.length) {
-			flag = 1
-
-
-
-		}
-		else if (firstInfiniteArray.length == secondInfiniteArray.length) {
-			let lengthOfArray = 0
-			let numberFromArrayOne = 0
-			let numberFromArrayTwo = 0
-			while (lengthOfArray != (firstInfiniteArray.length)) {
-				numberFromArrayOne = numberFromArrayOne * 10 + firstInfiniteArray[lengthOfArray]
-				numberFromArrayTwo = numberFromArrayTwo * 10 + secondInfiniteArray[lengthOfArray]
-				lengthOfArray++
-
+			//resultant for storing the the result of operation
+			let resultant = []
+	
+			// to store the carry value after subtraction 
+			let carry = 0
+			//using 2 pointer approch
+			let maxArrayPointer = firstInfiniteArray.length - 1
+			let minArrayPointer = secondInfiniteArray.length - 1
+			// taking a carry which will add to the next number 
+			// if number is smaller then it will add 10 to it so subtraction
+			while (minArrayPointer >= 0) {
+				if (secondInfiniteArray[minArrayPointer] > (firstInfiniteArray[maxArrayPointer] + carry)) {
+					firstInfiniteArray[maxArrayPointer] = 10 + (firstInfiniteArray[maxArrayPointer] + carry)
+					carry = -1
+					resultant.unshift(firstInfiniteArray[maxArrayPointer] - secondInfiniteArray[minArrayPointer])
+	
+	
+	
+				}
+				else {
+					resultant.unshift(((firstInfiniteArray[maxArrayPointer] + carry) - secondInfiniteArray[minArrayPointer]))
+					carry = 0
+				}
+				minArrayPointer--
+				maxArrayPointer--
 			}
-			if (numberFromArrayOne > numberFromArrayTwo) {
-
-				flag = 1
+			// for remaining element
+			for (let i = maxArrayPointer; i >= 0; i--) {
+				if (carry + firstInfiniteArray[i] >= 0) {
+					resultant.unshift(carry + firstInfiniteArray[i])
+					carry = 0
+	
+				}
+				else {
+					resultant.unshift(9)
+				}
 			}
-			else {
-
-				flag = 2
-
-
+			// for removing leading zeros
+	
+			while (resultant[0] == 0) {
+				resultant.shift()
 			}
-
+			let resultantInfiniteArray = new InfiniteNumber(resultant)
+			return resultantInfiniteArray
 		}
-		else {
-
-			flag = 2
-
+		else{
+			return new Error("The second number cannot be greater then first")
 		}
-		// max and min array for subtracting
-		let maxArray = flag == 1 ? firstInfiniteArray : secondInfiniteArray
-		let minArray = flag == 1 ? secondInfiniteArray : firstInfiniteArray
-
-		//resultant for storing the the result of operation
-		let resultant = []
-
-		// to store the carry value after subtraction 
-		let carry = 0
-		//using 2 pointer approch
-		let maxArrayPointer = maxArray.length - 1
-		let minArrayPointer = minArray.length - 1
-		// taking a carry which will add to the next number 
-		// if number is smaller then it will add 10 to it so subtraction
-		while (minArrayPointer >= 0) {
-			if (minArray[minArrayPointer] > (maxArray[maxArrayPointer] + carry)) {
-				maxArray[maxArrayPointer] = 10 + (maxArray[maxArrayPointer] + carry)
-				carry = -1
-				resultant.unshift(maxArray[maxArrayPointer] - minArray[minArrayPointer])
-
-
-
-			}
-			else {
-				resultant.unshift(((maxArray[maxArrayPointer] + carry) - minArray[minArrayPointer]))
-				carry = 0
-			}
-			minArrayPointer--
-			maxArrayPointer--
-		}
-		// for remaining element
-		for (let i = maxArrayPointer; i >= 0; i--) {
-			if (carry + maxArray[i] >= 0) {
-				resultant.unshift(carry + maxArray[i])
-				carry = 0
-
-			}
-			else {
-				resultant.unshift(9)
-			}
-		}
-		// for removing leading zeros
-
-		while (resultant[0] == 0) {
-			resultant.shift()
-		}
-		// if we are subtracting larger number from smaller then add a -ve sign 
-		if (flag == 2) {
-			resultant.unshift("-")
-		}
-
-		let resultantInfiniteArray = new InfiniteNumber(resultant)
-		return resultantInfiniteArray
 
 	}
 
@@ -357,19 +318,101 @@ class InfiniteNumber {
 
 		return resultantInfiniteArray
 	}
+	/** compare the two infinite numbers 
+	 * 
+	 * @param {InfiniteNumber} infiniteNumber input infinite number
+	 * @returns {Boolean} true if the calling infinite number is greater flase if not
+	 */
+	compareTwoInfiniteNumber(infiniteNumber){
+		// get arrays from both object
+		let firstInfiniteArray = this.getInternalArray()
+		let secondInfiniteArray = infiniteNumber.getInternalArray()
+
+		//compare
+		if (firstInfiniteArray.length > secondInfiniteArray.length) {
+			 return true
+
+
+
+		}
+		else if (firstInfiniteArray.length == secondInfiniteArray.length) {
+			let lengthOfArray = 0
+			let numberFromArrayOne = 0
+			let numberFromArrayTwo = 0
+			while (lengthOfArray != (firstInfiniteArray.length)) {
+				numberFromArrayOne = numberFromArrayOne * 10 + firstInfiniteArray[lengthOfArray]
+				numberFromArrayTwo = numberFromArrayTwo * 10 + secondInfiniteArray[lengthOfArray]
+				lengthOfArray++
+
+			}
+			if (numberFromArrayOne >= numberFromArrayTwo) {
+
+				return true
+			}
+			else  {
+
+				return false
+
+
+			}
+
+		}
+		else {
+
+			return false
+
+		}
+
+	}
+	/** divide two infinite numbers
+	 * 
+	 * @param {InfiniteNumber} infiniteNumber input infinite number to divide
+	 * @returns {InfiniteNumber} resultant of  
+	 */
+	divideInfiniteNumber(infiniteNumber){
+		// getting array out of object
+		let firstInfiniteArray = this.getInternalArray()
+		let secondInfiniteArray = infiniteNumber.getInternalArray()
+
+		//we will perform division by repeted subtraction
+		// declare a variable for that
+		let divisionCount = 0
+		let resultantInfiniteNumber = new InfiniteNumber(this._internalArray)
+		// console.log(resultantInfiniteNumber._internalArray);
+		while(resultantInfiniteNumber.compareTwoInfiniteNumber(infiniteNumber)==true){
+			resultantInfiniteNumber = resultantInfiniteNumber.subtractInfiniteArray(infiniteNumber)
+
+			divisionCount++
+			
+			
+
+		}
+		// again make this as an array
+		let resultant = []
+		while(divisionCount!=0){
+			resultant.unshift(divisionCount%10)
+			divisionCount = Math.floor(divisionCount/10)
+		}
+		let resultInfiniteNumber = new InfiniteNumber(resultant)
+		return resultInfiniteNumber
+	}
 }
 
 
 
 
 
-let firstObj = new InfiniteNumber([1, 2, 3, 4])
-let secondObj = new InfiniteNumber([2])
-let addition = firstObj.addInfiniteNumber(secondObj)
-console.log(addition.getNumberAsString())
+let firstObj = new InfiniteNumber([1,2,0])
+let secondObj = new InfiniteNumber([3])
+// let addition = firstObj.addInfiniteNumber(secondObj)
+// console.log(addition.getNumberAsString())
 // let subtraction = firstObj.subtractInfiniteArray(secondObj)
 // console.log(subtraction.getNumberAsString())
 
 
-let multiply = firstObj.multiplyInfiniteNumber(secondObj)
-console.log(multiply.getNumberAsString());
+// let multiply = firstObj.multiplyInfiniteNumber(secondObj)
+// console.log(multiply.getNumberAsString());
+
+
+// let division = firstObj.divideInfiniteNumber(secondObj)
+// console.log(division.getNumberAsString());
