@@ -251,11 +251,7 @@ function getJSNumberRepresentation(inputDeciamlNumber) {
 		// for right part
 		let afterRadixPointNumber = handelAfterRadixPointNumber(splitted[1])
 
-		// add padding to the beforeRedixPoint
-		//TODO: this length should be updated afterwards only for testing now
-		for(let i=0;i<4;i++){
-			beforeRedixPointNumber.unshift(0)
-		}
+
 		// store the length of beforeRadixPointNumber so that we know where to add '.'
 		let lengthTillRadixPoint = beforeRedixPointNumber.length
 
@@ -264,6 +260,7 @@ function getJSNumberRepresentation(inputDeciamlNumber) {
 		if(flag == -1){
 			combinedBinaryNumber = give2sComplement(combinedBinaryNumber)
 		}
+		
 
 		// now check for first leading one 
 		let positionOfLeadingOne 
@@ -288,7 +285,7 @@ function getJSNumberRepresentation(inputDeciamlNumber) {
 		//now according to the implicit representation of float we take
 		//RHS of most signficant 1 
 				
-		for(let i=positionOfLeadingOne-1;i<combinedBinaryNumber.length;i++){
+		for(let i=Exponent;i<combinedBinaryNumber.length;i++){
 			jsRepresentation.push(combinedBinaryNumber[i])
 
 		}
@@ -304,6 +301,61 @@ function getJSNumberRepresentation(inputDeciamlNumber) {
 		
 
 		return jsRepresentation
+	}
+
+
+/**
+ * 
+ * @param {Array<Number} jsRepresentation input js representation
+ * @returns {Number} output decimal number
+ */
+function getNumericFromJSRepresentation(jsRepresentation){
+	// get the exponent from the array first
+	let Exponent =[]
+	for(let i=0;i<11;i++){
+		Exponent.push(jsRepresentation[i])
+	}
+	// converting to decimal
+	let ExponentToDecimal = getSimpleDecimalFrom2sComplement(Exponent)
+
+	// taking out mantisa 
+
+	let mantisa = []
+	for(let i=11;i<jsRepresentation.length;i++){
+		mantisa.push(jsRepresentation[i])
+	}
+	// before radix point number
+	let beforeRedixPointNumber = [1]
+	for(let i=0;i<ExponentToDecimal;i++){
+		beforeRedixPointNumber.push(mantisa[i])
+	}
+	// after radix point
+	let afterRadixPointNumber = []
+	for(let i=ExponentToDecimal;i<mantisa.length;i++){
+		afterRadixPointNumber.push(mantisa[i])
+
+	}
+	// convert before radix point binary number to decimal
+	let decimalNumber = convertToDecimal(beforeRedixPointNumber)
+	
+	// convert the afterRadixPointNumber to decimal
+	let floatPart = 0
+	let power = 1/2
+	for(let i=0;i<afterRadixPointNumber.length;i++){
+		floatPart = power*afterRadixPointNumber[i] + floatPart
+		power = power/2
+
+	}
+	// add the decimal part
+	decimalNumber = decimalNumber+floatPart
+
+	// return the  decimal number
+	return decimalNumber
+
+
+
+
+}
 		
 		
 
@@ -311,11 +363,16 @@ function getJSNumberRepresentation(inputDeciamlNumber) {
 	
 
 
-}
-
 
 // let arr = getSimple2sComplement(-4,11)
 // console.log(getSimpleDecimalFrom2sComplement(arr));
 // puransTesting()
 
 console.log(getJSNumberRepresentation(3.14));
+
+console.log(getNumericFromJSRepresentation([
+	0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 1, 1, 0, 0,
+	1, 0, 0, 0, 1, 1, 1,
+	1
+  ]));
