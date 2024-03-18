@@ -92,8 +92,8 @@ class InfiniteNumber {
 				}
 				let tempArray = []
 				for (const key in inputObject) {
-					if (Object.hasOwnProperty.call(object, key)) {
-						const element = object[key];
+					if (Object.hasOwnProperty.call(inputObject, key)) {
+						const element = inputObject[key];
 						if (typeof element != 'number') {
 							return new Error("Only number in array are allowed")
 						}
@@ -103,7 +103,7 @@ class InfiniteNumber {
 						else if (element < 0) {
 							return new Error("Only positive integers are allowed")
 						}
-						tempArray.unshift(element)
+						tempArray.push(element)
 
 					}
 				}
@@ -118,7 +118,7 @@ class InfiniteNumber {
 
 
 
-		} else {
+		} else  {
 
 
 			throw new Error(`Constuctor of IniniteNumber does not support this data`
@@ -273,7 +273,7 @@ class InfiniteNumber {
 			return resultantInfiniteArray
 		}
 		else {
-			return new Error("The second number cannot be greater then first")
+			throw new Error("The second number cannot be greater than the first")
 		}
 
 	}
@@ -399,10 +399,10 @@ class InfiniteNumber {
 
 
 
-let firstObj = new InfiniteNumber("120")
-let secondObj = new InfiniteNumber("3")
-let addition = firstObj.addInfiniteNumber(secondObj)
-console.log(addition.getNumberAsString())
+// let firstObj = new InfiniteNumber("120")
+// let secondObj = new InfiniteNumber("3")
+// let addition = firstObj.addInfiniteNumber(secondObj)
+// console.log(addition.getNumberAsString())
 // let subtraction = firstObj.subtractInfiniteArray(secondObj)
 // console.log(subtraction.getNumberAsString())
 
@@ -413,3 +413,4 @@ console.log(addition.getNumberAsString())
 
 // let division = firstObj.divideInfiniteNumber(secondObj)
 // console.log(division.getNumberAsString());
+// export default InfiniteNumber
