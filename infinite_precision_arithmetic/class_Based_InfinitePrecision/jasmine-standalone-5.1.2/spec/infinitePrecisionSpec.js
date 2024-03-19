@@ -38,7 +38,7 @@ describe("Infinite Number", function () {
                 expect(nonNumericStrObj).toEqual(jasmine.any(Error));
             })
             it("should reject non-integer strings", function () {
-                let nonNumericStrObj = new InfiniteNumber("123.23");
+                let nonNumericStrObj = new InfiniteNumber("123.12");
                 expect(nonNumericStrObj).toEqual(jasmine.any(Error));
             })
             it("should reject negative integer strings", function () {
@@ -188,7 +188,7 @@ describe("Infinite Number", function () {
 
     })
 
-    describe("Infiniete Number Multiplication",function(){
+    describe("Infinite Number Multiplication",function(){
         it("should correctly multiply two positive numbers", function() {
             let firstNum = new InfiniteNumber("123");
             let secondNum = new InfiniteNumber("2");
@@ -200,6 +200,48 @@ describe("Infinite Number", function () {
             let secondNum = new InfiniteNumber("1");
             let result = firstNum.multiplyInfiniteNumber(secondNum);
             expect(result.getNumberAsString()).toEqual("123");
+        })
+        it("should handle multiplication with a larger second number", function() {
+            let firstNum = new InfiniteNumber("2");
+            let secondNum = new InfiniteNumber("123");
+            let result = firstNum.multiplyInfiniteNumber(secondNum);
+            expect(result.getNumberAsString()).toEqual("246");
+        })
+        it("should throw an error for numbers too large to multiply", function() {
+            let firstNum = new InfiniteNumber("12345678");
+            let secondNum = new InfiniteNumber("12345678");
+            expect(function() { 
+                firstNum.multiplyInfiniteNumber(secondNum); 
+            }).toThrowError("Number too large cannot perform such long operation.Optimised function in progress");
+        })
+        it("should correctly multiply a number by 0", function() {
+            let firstNum = new InfiniteNumber("123");
+            let secondNum = new InfiniteNumber("0");
+            let result = firstNum.multiplyInfiniteNumber(secondNum);
+            expect(result.getNumberAsString()).toEqual("0");
+        })
+
+    })
+
+    describe("Infinite Number Division",function(){
+        it("should correctly divide two numbers and return the quotient", function() {
+            let firstNum = new InfiniteNumber("246");
+            let secondNum = new InfiniteNumber("2");
+            let result = firstNum.divideInfiniteNumber(secondNum);
+            expect(result.getNumberAsString()).toEqual("123");
+        })
+
+        it("should correctly divide a number by 1", function() {
+            let firstNum = new InfiniteNumber("123");
+            let secondNum = new InfiniteNumber("1");
+            let result = firstNum.divideInfiniteNumber(secondNum);
+            expect(result.getNumberAsString()).toEqual("123");
+        })
+        it("should handle division that results in a non-integer value by flooring the result", function() {
+            let firstNum = new InfiniteNumber("123");
+            let secondNum = new InfiniteNumber("2");
+            let result = firstNum.divideInfiniteNumber(secondNum);
+            expect(result.getNumberAsString()).toEqual("61"); // Assuming the division floors the result
         })
 
     })

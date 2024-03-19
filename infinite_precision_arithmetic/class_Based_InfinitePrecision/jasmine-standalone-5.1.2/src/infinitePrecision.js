@@ -301,6 +301,9 @@ class InfiniteNumber {
 			lengthOfArray++
 
 		}
+		if(numberFromArray==0){
+			return new InfiniteNumber(0)
+		}
 		// // multiply by continuously calling the addArray function and adding
 
 		// let resultantInfiniteArray = new InfiniteNumber(firstInfiniteNumber)
@@ -373,6 +376,9 @@ class InfiniteNumber {
 
 		//we will perform division by repeted subtraction
 		// declare a variable for that
+		if (!this.compareTwoInfiniteNumber(infiniteNumber)) {
+			return new InfiniteNumber("0"); // Directly return 0 as an InfiniteNumber
+		}
 		let divisionCount = 0
 		let resultantInfiniteNumber = new InfiniteNumber(this._internalArray)
 		// console.log(resultantInfiniteNumber._internalArray);
