@@ -50,7 +50,9 @@ class InfiniteNumber {
 			// 	return new Error("Only integer are allowed")
 			// }
 			inputObject = parseInt(inputObject)
-
+			if(inputObject==0){
+				tempArray = [0]
+			}
 			while (inputObject != 0) {
 				tempArray.unshift((inputObject % 10))
 				inputObject = Math.floor(inputObject / 10)
@@ -371,10 +373,15 @@ class InfiniteNumber {
 	 */
 	divideInfiniteNumber(infiniteNumber) {
 		// getting array out of object
-		let firstInfiniteArray = this.getInternalArray()
-		let secondInfiniteArray = infiniteNumber.getInternalArray()
+		let secondInfiniteArray = infiniteNumber.getNumberAsString()
 
-		//we will perform division by repeted subtraction
+		
+		if(secondInfiniteArray==="0"){
+			throw new Error("Cannot divide by zero")
+		}
+
+
+		// we will perform division by repeted subtraction
 		// declare a variable for that
 		if (!this.compareTwoInfiniteNumber(infiniteNumber)) {
 			return new InfiniteNumber("0"); // Directly return 0 as an InfiniteNumber
@@ -406,7 +413,7 @@ class InfiniteNumber {
 
 
 // let firstObj = new InfiniteNumber("120")
-// let secondObj = new InfiniteNumber("3")
+// let secondObj = new InfiniteNumber("0")
 // let addition = firstObj.addInfiniteNumber(secondObj)
 // console.log(addition.getNumberAsString())
 // let subtraction = firstObj.subtractInfiniteArray(secondObj)

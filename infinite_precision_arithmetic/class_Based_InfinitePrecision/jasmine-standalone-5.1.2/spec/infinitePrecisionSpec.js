@@ -230,7 +230,12 @@ describe("Infinite Number", function () {
             let result = firstNum.divideInfiniteNumber(secondNum);
             expect(result.getNumberAsString()).toEqual("123");
         })
-
+        it("should return 0 when the first number is smaller than the second number", function() {
+            let firstNum = new InfiniteNumber("2");
+            let secondNum = new InfiniteNumber("246");
+            let result = firstNum.divideInfiniteNumber(secondNum);
+            expect(result.getNumberAsString()).toEqual("0");
+        })
         it("should correctly divide a number by 1", function() {
             let firstNum = new InfiniteNumber("123");
             let secondNum = new InfiniteNumber("1");
@@ -242,6 +247,13 @@ describe("Infinite Number", function () {
             let secondNum = new InfiniteNumber("2");
             let result = firstNum.divideInfiniteNumber(secondNum);
             expect(result.getNumberAsString()).toEqual("61"); // Assuming the division floors the result
+        })
+        it("should throw an error when attempting to divide by 0", function() {
+            let firstNum = new InfiniteNumber("123");
+            let secondNum = new InfiniteNumber("0");
+            expect(function() { 
+                firstNum.divideInfiniteNumber(secondNum); 
+            }).toThrowError("Cannot divide by zero");
         })
 
     })
