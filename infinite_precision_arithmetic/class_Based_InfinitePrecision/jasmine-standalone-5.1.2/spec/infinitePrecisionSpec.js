@@ -1,5 +1,54 @@
+/** Writin test cases for Infinite Number class
+ * 
+ */
 describe("Infinite Number", function () {
+/**test cases for getInternalArray method
+ * 
+ */
+    describe("Infinite Number getInternalArray",function(){
+        it("should return the correct internal array for an integer number", function() {
+            let numObj = new InfiniteNumber(123);
+            expect(numObj.getInternalArray()).toEqual([1, 2, 3]);
+        })
+        it("should return the correct internal array for a numeric string", function() {
+            let strObj = new InfiniteNumber("456");
+            expect(strObj.getInternalArray()).toEqual([4, 5, 6]);
+        })
+        it("should return the correct internal array for an array of integers", function() {
+            let arrayObj = new InfiniteNumber([7, 8, 9]);
+            expect(arrayObj.getInternalArray()).toEqual([7, 8, 9]);
+        })
+        it("should return a single-element array for the number zero", function() {
+            let zeroObj = new InfiniteNumber(0);
+            expect(zeroObj.getInternalArray()).toEqual([0]);
+        })
+    })
 
+/**test cases for getNumberAsString method
+
+ */
+    describe("Infinite Number getNumberAsString",function(){
+        it("should return a string representation for an integer number", function() {
+            let numObj = new InfiniteNumber(123);
+            expect(numObj.getNumberAsString()).toEqual("123");
+        })
+        it("should return a string representation for a numeric string", function() {
+            let strObj = new InfiniteNumber("456");
+            expect(strObj.getNumberAsString()).toEqual("456");
+        })
+        it("should return a string representation for an array of integers", function() {
+            let arrayObj = new InfiniteNumber([7, 8, 9]);
+            expect(arrayObj.getNumberAsString()).toEqual("789");
+        })
+        it("should return '0' for the number zero", function() {
+            let zeroObj = new InfiniteNumber(0);
+            expect(zeroObj.getNumberAsString()).toEqual("0");
+        })    
+    })
+
+    /**test cases for the constructor
+     * 
+     */
     describe("Infinite Number Constructor", function () {
 
 
@@ -92,6 +141,9 @@ describe("Infinite Number", function () {
             })
         })
     })
+    /**test cases for addInfiniteNumber method
+     * 
+     */
 
     describe("Infinite Number Addition", function () {
         it("should correctly add two positive numbers", function () {
@@ -119,7 +171,9 @@ describe("Infinite Number", function () {
             expect(result.getNumberAsString()).toEqual("1000");
         })
     })
-
+/**test cases for cpmpareTwoInfiniteNumber method
+ * 
+ */
     describe("Infinite Number check two number",function(){
         it("should return true when the first number is greater than the second number", function() {
             let firstNum = new InfiniteNumber("456");
@@ -157,7 +211,9 @@ describe("Infinite Number", function () {
             expect(firstNum.compareTwoInfiniteNumber(secondNum)).toBe(false);
         })
     })
-
+/**test cases for subtractInfiniteArray method
+ * 
+ */
     describe("Infinite Number Subtraction", function () {
         it("should correctly subtract two positive numbers of equal length", function () {
             let firstNum = new InfiniteNumber("456");
@@ -187,7 +243,9 @@ describe("Infinite Number", function () {
         });
 
     })
-
+/**test cases for multiplyInfiniteNumber method
+ * 
+ */
     describe("Infinite Number Multiplication",function(){
         it("should correctly multiply two positive numbers", function() {
             let firstNum = new InfiniteNumber("123");
@@ -222,7 +280,9 @@ describe("Infinite Number", function () {
         })
 
     })
-
+/**test cases for divideInfiniteNumber method
+ * 
+ */
     describe("Infinite Number Division",function(){
         it("should correctly divide two numbers and return the quotient", function() {
             let firstNum = new InfiniteNumber("246");
@@ -257,4 +317,7 @@ describe("Infinite Number", function () {
         })
 
     })
+
+    
+
 })
